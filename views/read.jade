@@ -1,0 +1,53 @@
+extends layout
+
+block content
+	script(type='text/javascript')	
+		$(document).ready(function() {
+			var keyValuesResult = !{result};
+			<!-- Data source for outer grid -->	
+			var dataSource = new kendo.data.DataSource({
+				pageSize: 6,		
+				autoSync: true,
+				data: keyValuesResult,
+				schema: {
+					model: {
+						fields: {
+								updated: { type: "date" },
+								created: { type: "date" },
+								address:{ type: "string" },
+								name:{ type: "string" },
+								employeeid:{ type: "string" },
+								_id:{type:"string"}
+								}
+							}
+						}
+			});
+			
+			
+			<!-- Define the grid and attributes -->	
+			var element = $("#myGrid").kendoGrid({
+				dataSource:dataSource,
+					pageSize: 6,
+					serverPaging: true,
+					serverSorting: true,
+					databind:true,					
+					height: 450,
+					sortable: true,
+					pageable: true,
+					selectable: true,
+					filterable: true,
+					resizable: true,
+					columns: [
+							{ field:"updated",title:"Updated Date",attributes:{title:"ToolTip"}, width: 150 },
+							{ field:"created",title:"Created Date",width: 150 },
+							{ field:"address",title:"Address",width: 100 },
+							{ field:"name",title:"Name",width: 100 },
+							{ field:"employeeid",title:"Employee Id",width: 50 },
+							{ field:"_id",title:"_id",width: 50}
+							],
+					});
+		});
+	h1= title
+	p Employee Details
+	#example.k-content
+	#myGrid

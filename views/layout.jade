@@ -1,0 +1,17 @@
+doctype 5
+html
+	head
+		h1= "Node.js - Mongo DB - Mongoose - Jade - Kendo UI - CRUD Example"
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(type='text/javascript', src='/jquery/js/jquery.min.js')
+		script(type='text/javascript', src='/kendo/src/js/kendo.web.js')
+		script(type='text/javascript', src='/kendo/src/js/kendo.grid.js')
+		link(rel='stylesheet', type='text/css', href='/kendo/src/styles/kendo.common.css')
+		link(rel='stylesheet', type='text/css', href='/kendo/src/styles/kendo.default.css')
+		p
+			a(title='CREATE', href="/getCreateForm") Create Employee | 
+			a(title='READ', href="/readEmployees") Read Employees | 
+			a(title='UPDATE', href="/getUpdateForm") Update Employee | 
+			a(title='DELETE', href="/getDeleteForm") Delete Employee 
+	body
+		block content

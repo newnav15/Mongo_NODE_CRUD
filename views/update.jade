@@ -1,0 +1,116 @@
+extends layout
+
+block content
+	<!-- popup editor template -->
+	script(id="popup_editor" , type='text/x-kendo-template')
+		table.form_table(cellpadding='5', cellspacing='5', border='0')
+			tr
+				td
+					div
+						label(for='address') Address
+				td
+					input(name='text', class='k-textbox',name="address",data-bind='value:address',data-value-field='address',data-text-field='address',data-role='textbox', required="true")
+			tr
+				td
+					div
+						label(for='name') Name
+				td
+					input(type='text', class='k-textbox', name='name', data-bind='value:name', data-role='textbox', required="true")
+			tr
+				td
+					div
+						label(for='employeeid') EmployeeID
+				td
+					input(type='text', class='k-textbox', name='employeeid', data-type='textbox', data-bind='value:employeeid', data-role='textbox', readonly, disabled='disabled')
+	
+	script(type='text/javascript')	
+		$(document).ready(function() {
+			var keyValuesResult = !{result};
+			<!-- Data source for outer grid -->	
+			var dataSource = new kendo.data.DataSource({
+				pageSize: 6,		
+				autoSync: true,
+				data: keyValuesResult,
+				schema: {
+					model: {
+						fields: {
+								updated: { type: "date" },
+								created: { type: "date" },
+								address:{ type: "string" },
+								name:{ type: "string" },
+								employeeid:{ type: "string" },
+								_id:{type:"string"}
+								}
+							}
+						}
+			});
+			
+			
+			<!-- Define the  grid and attributes -->	
+			var element = $("#myGrid").kendoGrid({
+				dataSource:dataSource,
+					pageSize: 6,
+					serverPaging: true,
+					serverSorting: true,
+					databind:true,					
+					height: 450,
+					sortable: true,
+					pageable: true,
+					selectable: true,
+					filterable: true,
+					resizable: true,
+					columns: [
+							{ field:"updated",title:"Updated Date",attributes:{title:"ToolTip"}, width: 150 },
+							{ field:"created",title:"Created Date",width: 150 },
+							{ field:"address",title:"Address",width: 100 },
+							{ field:"name",title:"Name",width: 100 },
+							{ field:"employeeid",title:"Employee Id",width: 50 },
+							{ field:"_id",title:"_id",width: 50},
+							{command: 
+								{
+									name : "edit",
+									text : "update",
+								}
+							}
+							],
+							editable: {
+									mode: "popup",
+									template: kendo.template($("#popup_editor").html())
+								},
+							edit: editFunction
+					});
+					
+				function editFunction(e){
+					<!-- Edit handler -->
+					var popUpContainer = e.container;
+					var selectedrow = $("#myGrid").find("tbody tr.k-state-selected");
+					var rowData = $('#myGrid').data("kendoGrid").dataItem(selectedrow);
+			
+					$(e.container).on('click', '.k-grid-update', function(e) {
+						var updatedName = $(popUpContainer).find("input[name='name']").val();
+						var updatedAddress = $(popUpContainer).find("input[name='address']").val();
+						var updateQueryString = "name="+updatedName+"&address="+updatedAddress+"&_id="+rowData._id;
+						
+						if(updatedName!="" && updatedName!=undefined){
+							$.ajax({
+								type:"GET",
+								dataType: "json",
+								url: '/updateEmployee',
+								data:updateQueryString,
+								success:function(msg){
+									//translatedData=msg;
+									//dataSource1.data(translatedData);
+									//alert("translatedData..."+translatedData);
+								},
+								error:function(XMLHttpRequest,textStatus,errorThrown){
+									//alert("error"+textStatus);
+								}
+							});//ajax ends here
+						}
+					});	
+				}
+		});
+	h1= title
+	p Employee Details
+	#example.k-content
+	#myGrid

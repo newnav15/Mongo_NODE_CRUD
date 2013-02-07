@@ -1,0 +1,22 @@
+extends layout
+block content
+	h1= "Create employee record"
+	form(method='post', name='', action='/createEmployee')
+		table.form_table(cellspacing='5', cellpadding='5', border='0')
+				tbody
+					tr
+						td.label Employee Name:
+						td
+							input(rows='5', class='k-textbox', name="employeeName")
+					tr
+						td.label Employee Address:
+						td
+							input(rows='5', class='k-textbox', name="employeeAddress")
+					tr
+						td.label Employee Id:
+						td
+							input(rows='5', class='k-textbox', name="employeeId")
+					tr
+						td
+							br
+							input.button1(type='submit', value='create',id="createButton")
